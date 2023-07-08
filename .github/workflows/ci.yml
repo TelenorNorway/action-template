@@ -39,8 +39,8 @@ jobs:
         if: github.ref == 'refs/heads/main'
         env:
           MSG: ${{ github.event.head_commit.message }}
-        run: |
-          if [[ $MSG ~= '^v=[0-9]+[.][0-9]+[.][0-9]+$' ]] ; then echo deploy=yes >> $GITHUB_OUTPUT && echo version=v$(echo $MSG | cut -c 3-) >> $GITHUB_OUTPUT ; fi
+        shell: bash
+        run: if [[ $MSG ~= '^v=[0-9]+[.][0-9]+[.][0-9]+$' ]] ; then echo deploy=yes >> $GITHUB_OUTPUT && echo version=v$(echo $MSG | cut -c 3-) >> $GITHUB_OUTPUT ; fi
 
 
       - if: ${{ steps.version.outputs.deploy }} == 'yes'
