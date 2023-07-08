@@ -25,7 +25,7 @@ jobs:
         env:
           MSG: ${{ github.event.head_commit.message }}
         run: |
-          if echo 'if (!/^([0-9]+\.){2}[0-9]+$/g.test(process.env.MSG||"")) process.exit(1)' | node; then
+          if echo 'if (!/^v=([0-9]+\.){2}[0-9]+$/g.test(process.env.MSG||"")) process.exit(1)' | node; then
             echo deploy=yes >> $GITHUB_OUTPUT
             echo version=v$(echo $MSG | cut -c 3-) >> $GITHUB_OUTPUT
           fi
