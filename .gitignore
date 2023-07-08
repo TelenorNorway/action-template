@@ -13,7 +13,7 @@
 !/jest.config.cjs
 !/LICENSE
 !/package.json
-!/pnpm-lock.yaml
+!/package-lock.json
 !/README.md
 !/tsconfig.json
 
