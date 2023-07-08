@@ -9,11 +9,11 @@
     "prettier": "prettier",
     "eslint": "eslint",
     "--- CI Commands": "",
-		"ci:fmt":"pnpm run prettier --ignore-path .prettierignore --check **/*",
-		"ci:lint":"pnpm run eslint",
-		"ci:build": "pnpm run tsc",
-    "ci:test": "pnpm run jest --coverage dist/**/*.test.js",
-		"ci:prune": "pnpm prune --prod && rm -rf .github .vscode coverage src .eslintrc.cjs .gitignore .prettierignore .prettierrc.json jest.config.cjs README.md tsconfig.json"
+    "ci:fmt": "npm run prettier --ignore-path .prettierignore --check **/*",
+    "ci:lint": "npm run eslint",
+    "ci:build": "npm run tsc",
+    "ci:test": "npm run jest --coverage dist/**/*.test.js",
+    "ci:prune": "npm prune --production && rm -rf .github .vscode coverage src .eslintrc.cjs .gitignore .prettierignore .prettierrc.json jest.config.cjs README.md tsconfig.json"
   },
   "author": "Telenor <support@telenor.no>",
   "license": "MIT",

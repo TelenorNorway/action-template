@@ -13,27 +13,11 @@ jobs:
         with:
           node-version: 18
 
-      - uses: pnpm/action-setup@v2
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
-      
-      - id: pnpm-cache
-        shell: bash
-        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-      
-      - uses: actions/cache@v2
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: ${{ runner.os }}-pnpm-store-
-
-      - run: pnpm install
-      - run: pnpm run ci:fmt
-      - run: pnpm run ci:lint
-      - run: pnpm run ci:build
-      - run: pnpm run ci:test
+      - run: npm install
+      - run: npm run ci:fmt
+      - run: npm run ci:lint
+      - run: npm run ci:build
+      - run: npm run ci:test
 
       - id: version
         if: github.ref == 'refs/heads/main'
@@ -51,7 +35,7 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          pnpm run ci:prune
+          npm run ci:prune
           git add .
           git config user.name github-actions
           git config user.email github-actions@github.com
