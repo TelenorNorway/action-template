@@ -1,0 +1,21 @@
+{
+	"useTabs": true,
+	"trailingComma": "all",
+	"overrides": [
+		{
+			"files": ["package.json"],
+			"options": {
+				"tabWidth": 2,
+				"useTabs": false
+			}
+		},
+		{
+			"files": ["**/*.yaml"],
+			"excludeFiles": ["pnpm-lock.yaml"],
+			"options": {
+				"tabWidth": 2,
+				"useTabs": false
+			}
+		}
+	]
+}

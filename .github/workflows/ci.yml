@@ -1,0 +1,59 @@
+name: ci
+on:
+  - push
+permissions:
+  contents: write
+jobs:
+  ci:
+    name: "ci"
+    if: github.repository == 'j4m350n/setup-intellij'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+      
+      - id: pnpm-cache
+        shell: bash
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: ${{ runner.os }}-pnpm-store-
+
+      - run: pnpm install
+      - run: pnpm run ci:fmt
+      - run: pnpm run ci:lint
+      - run: pnpm run ci:build
+      - run: pnpm run ci:test
+
+      - id: version
+        env:
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          if [[ $MSG ~= '^v=[0-9]+[.][0-9]+[.][0-9]+$' ]] ; then echo deploy=yes >> $GITHUB_OUTPUT && echo version=v$(echo $MSG | cut -c 3-) >> $GITHUB_OUTPUT ; fi
+
+
+      - if: ${{ steps.version.outputs.deploy }} == 'yes'
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          pnpm run ci:prune
+          git add .
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -m release
+          git tag -f $VERSION
+          git push -fu origin $VERSION
+          
+
