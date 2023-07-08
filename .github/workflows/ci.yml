@@ -21,7 +21,7 @@ jobs:
 
       - name: "Versioning"
         id: version
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && startsWith(github.event.head_commit.message, 'v=')
         env:
           MSG: ${{ github.event.head_commit.message }}
         run: |
